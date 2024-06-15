@@ -3,40 +3,47 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PredScout - Player Info" Height="700" Width="1375">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <GroupBox Header="Team Dawn" Grid.Column="0" Margin="10">
-            <ListView x:Name="Team0ListView" ItemsSource="{Binding Team0Players}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
-                        <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
-                        <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
-                        <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
-                        <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
-                        <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
-                        <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </GroupBox>
-        <GroupBox Header="Team Dusk" Grid.Column="1" Margin="10">
-            <ListView x:Name="Team1ListView" ItemsSource="{Binding Team1Players}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
-                        <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
-                        <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
-                        <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
-                        <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
-                        <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
-                        <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </GroupBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="StatusTextBlock" Text="Not currently in a match" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Team Dawn" Grid.Column="0" Margin="10">
+                <ListView x:Name="Team0ListView" ItemsSource="{Binding Team0Players}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
+                            <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
+                            <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
+                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
+                            <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
+                            <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
+                            <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+            <GroupBox Header="Team Dusk" Grid.Column="1" Margin="10">
+                <ListView x:Name="Team1ListView" ItemsSource="{Binding Team1Players}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
+                            <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
+                            <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
+                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
+                            <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
+                            <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
+                            <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+        </Grid>
     </Grid>
 </Window>
 
