@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Linq;
 
 namespace PredScout
 {
@@ -135,6 +136,10 @@ namespace PredScout
                         }
                     }
 
+                    // Sort players within each team
+                    SortTeamPlayers(Team0Players);
+                    SortTeamPlayers(Team1Players);
+
                     //if (inCurrentMatch && !line.Contains("LogPredLoadingScreenManager: UserID:") && !line.Contains("LogPredLoadingScreenManager: Displaying pre game loading screen with player data"))
                     //{
                     //    Console.WriteLine("End of current match block.");
@@ -150,6 +155,28 @@ namespace PredScout
             {
                 Console.WriteLine($"Unexpected exception: {ex.Message}");
             }
+        }
+        private void SortTeamPlayers(ObservableCollection<PlayerInfo> players)
+        {
+            var sortedPlayers = players.OrderBy(p => GetRoleOrder(p.TeamRole)).ToList();
+            players.Clear();
+            foreach (var player in sortedPlayers)
+            {
+                players.Add(player);
+            }
+        }
+
+        private int GetRoleOrder(string role)
+        {
+            return role switch
+            {
+                "Offlane" => 0,
+                "Jungle" => 1,
+                "Midlane" => 2,
+                "Carry" => 3,
+                "Support" => 4,
+                _ => 5,
+            };
         }
     }
 
