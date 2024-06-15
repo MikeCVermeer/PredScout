@@ -14,9 +14,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows;
 
 namespace PredScout
 {
@@ -54,7 +55,7 @@ namespace PredScout
                 Console.WriteLine($"Error initializing FileSystemWatcher: {ex.Message}");
             }
 
-            //ProcessLogFile();  // Initial read to catch up on the latest log data
+            ProcessLogFile();  // Initial read to catch up on the latest log data
         }
 
         private void OnLogFileChanged(object sender, FileSystemEventArgs e)
@@ -68,18 +69,26 @@ namespace PredScout
             try
             {
                 Console.WriteLine("Reading log file...");
-                string[] lines = File.ReadAllLines(logFilePath);
+                string[] lines;
+
+                // Open the file with read-only access and shared access
+                using (FileStream fs = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    lines = sr.ReadToEnd().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                }
+
                 bool inCurrentMatch = true;
 
-                Console.WriteLine("Clearing current player information...");
                 Dispatcher.Invoke(() =>
                 {
+                    Console.WriteLine("Clearing current player information...");
                     Team0Players.Clear();
                     Team1Players.Clear();
                 });
 
-                //for (int i = lines.Length - 1; i >= 0; i--)
-                for (int i = 0; i < lines.Length; i++)
+                for (int i = lines.Length - 1; i >= 0; i--) // Keep this in for later use
+                // for (int i = 0; i < lines.Length; i++) // For testing currently
                 {
                     string line = lines[i];
                     Console.WriteLine($"Processing line {i}: {line}");
@@ -87,65 +96,68 @@ namespace PredScout
                     if (line.Contains("LogPredLoadingScreenManager: Displaying pre game loading screen with player data"))
                     {
                         Console.WriteLine("Found start of new match block.");
-                        inCurrentMatch = true;
+                        inCurrentMatch = false;
                         continue;
                     }
 
                     if (inCurrentMatch && line.Contains("LogPredLoadingScreenManager: UserID:"))
                     {
                         var match = Regex.Match(line, @"UserID:\s(\S+),.*Player Name:\s([^,]+),.*HeroData:\sHero_([^,]+),.*Team:\s(\d),.*Team Role:\s(\w+)");
-                        if (match.Success)
-                        {
-                            string userId = match.Groups[1].Value;
-                            string playerName = match.Groups[2].Value;
-                            string hero = match.Groups[3].Value;
-                            int team = int.Parse(match.Groups[4].Value);
-                            string teamRole = match.Groups[5].Value;
-
-                            Console.WriteLine($"Match found: UserID={userId}, PlayerName={playerName}, Hero={hero}, Team={team}, TeamRole={teamRole}");
-
-                            PlayerInfo playerInfo = new PlayerInfo
-                            {
-                                UserId = userId,
-                                PlayerName = playerName,
-                                Hero = hero,
-                                Team = team,
-                                TeamRole = teamRole,
-                                MMR = "N/A",  // Placeholder for MMR
-                                RoleWinrate = "N/A",  // Placeholder for Role Winrate
-                                OverallWinrate = "N/A",  // Placeholder for Overall Winrate
-                                HeroWinrate = "N/A"  // Placeholder for Hero Winrate
-                            };
-
-                            Dispatcher.Invoke(() =>
-                            {
-                                if (team == 0)
-                                {
-                                    Team0Players.Add(playerInfo);
-                                }
-                                else
-                                {
-                                    Team1Players.Add(playerInfo);
-                                }
-                                Console.WriteLine($"Player info added: {playerName}");
-                            });
-                        }
-                        else
+                        if (!match.Success)
                         {
                             Console.WriteLine("Regex match failed.");
+                            continue;
                         }
+
+                        string userId = match.Groups[1].Value;
+                        string playerName = match.Groups[2].Value;
+                        string hero = match.Groups[3].Value;
+                        int team = int.Parse(match.Groups[4].Value);
+                        string teamRole = match.Groups[5].Value;
+
+                        Console.WriteLine($"Match found: UserID={userId}, PlayerName={playerName}, Hero={hero}, Team={team}, TeamRole={teamRole}");
+
+                        var playerInfo = new PlayerInfo
+                        {
+                            UserId = userId,
+                            PlayerName = playerName,
+                            Hero = hero,
+                            Team = team,
+                            TeamRole = teamRole,
+                            MMR = "N/A",  // Placeholder for MMR
+                            RoleWinrate = "N/A",  // Placeholder for Role Winrate
+                            OverallWinrate = "N/A",  // Placeholder for Overall Winrate
+                            HeroWinrate = "N/A"  // Placeholder for Hero Winrate
+                        };
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            if (team == 0)
+                            {
+                                Team0Players.Add(playerInfo);
+                            }
+                            else
+                            {
+                                Team1Players.Add(playerInfo);
+                            }
+                            Console.WriteLine($"Player info added: {playerName}");
+
+                            // Sort players within each team
+                            SortTeamPlayers(Team0Players);
+                            SortTeamPlayers(Team1Players);
+                        });
                     }
 
-                    // Sort players within each team
-                    SortTeamPlayers(Team0Players);
-                    SortTeamPlayers(Team1Players);
-
-                    //if (inCurrentMatch && !line.Contains("LogPredLoadingScreenManager: UserID:") && !line.Contains("LogPredLoadingScreenManager: Displaying pre game loading screen with player data"))
-                    //{
-                    //    Console.WriteLine("End of current match block.");
-                    //    break;
-                    //}
+                    if (inCurrentMatch && !line.Contains("logpredloadingscreenmanager: userid:") && !line.Contains("logpredloadingscreenmanager: displaying pre game loading screen with player data"))
+                    {
+                        Console.WriteLine("End of current match block.");
+                        break;
+                    }
+                    // Commented for testing currently.
                 }
+
+                // Exit the method if reading the file succeeds
+                return;
             }
             catch (IOException ex)
             {
@@ -154,8 +166,10 @@ namespace PredScout
             catch (Exception ex)
             {
                 Console.WriteLine($"Unexpected exception: {ex.Message}");
+                return;
             }
         }
+
         private void SortTeamPlayers(ObservableCollection<PlayerInfo> players)
         {
             var sortedPlayers = players.OrderBy(p => GetRoleOrder(p.TeamRole)).ToList();
@@ -193,4 +207,3 @@ namespace PredScout
         public string HeroWinrate { get; set; }
     }
 }
-
