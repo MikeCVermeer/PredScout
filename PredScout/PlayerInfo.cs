@@ -4,14 +4,17 @@ namespace PredScout
 {
     public class PlayerInfo
     {
-        public string UserId { get; set; }
-        public string PlayerName { get; set; }
-        public string Hero { get; set; }
-        public int Team { get; set; }
-        public string TeamRole { get; set; }
-        public string MMR { get; set; }
-        public string RoleWinrate { get; set; }
-        public string OverallWinrate { get; set; }
-        public string HeroWinrate { get; set; }
+        public string UserId { get; set; } // From the log file
+        public string PlayerName { get; set; } // From the log file
+        public string Hero { get; set; } // From the log file
+        public int Team { get; set; } // From the log file
+        public string TeamRole { get; set; } // From the log file
+        public int HeroId { get; set; } // Fetched from HeroNameToId
+        public string MMR { get; set; } // Fetched from the API
+        public string Rank { get; set; } // Fetched from the API
+        public string RoleWinrate { get; set; } // Fetched from the API
+        public string OverallWinrate { get; set; } // Fetched from the API
+        public string HeroWinrate { get; set; } // Fetched from the API
+
     }
 }
