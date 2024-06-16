@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace PredScout
@@ -13,15 +14,18 @@ namespace PredScout
         private readonly string logFilePath;
         private long lastFilePosition;
         private bool inMatch;
+        private readonly ApiService apiService;
 
         public LogFileProcessor(string logFilePath)
         {
             this.logFilePath = logFilePath;
             this.lastFilePosition = 0;
             this.inMatch = false;
+            this.apiService = new ApiService();
+
         }
 
-        public void ProcessLogFile(ObservableCollection<PlayerInfo> team0Players, ObservableCollection<PlayerInfo> team1Players, Action<string> updateStatus)
+        public async void ProcessLogFile(ObservableCollection<PlayerInfo> team0Players, ObservableCollection<PlayerInfo> team1Players, Action<string> updateStatus)
         {
             try
             {
@@ -90,11 +94,22 @@ namespace PredScout
                                 Hero = string.IsNullOrEmpty(hero) ? "Error" : hero,
                                 Team = team,
                                 TeamRole = string.IsNullOrEmpty(teamRole) ? "Error" : teamRole,
-                                MMR = "Error",  // Placeholder for MMR
-                                RoleWinrate = "Error",  // Placeholder for Role Winrate
-                                OverallWinrate = "Error",  // Placeholder for Overall Winrate
-                                HeroWinrate = "Error"  // Placeholder for Hero Winrate
                             };
+
+                            // Get Hero ID from Hero Name
+                            try
+                            {
+                                var heroNameToId = new HeroNameToId();
+                                int heroId = heroNameToId.GetHeroId(hero);
+                                playerInfo.HeroId = heroId;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+
+                            // Fetch player statistics
+                            await FetchAndPopulatePlayerStatistics(playerInfo);
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
@@ -123,6 +138,33 @@ namespace PredScout
             catch (Exception ex)
             {
                 Console.WriteLine($"Unexpected exception: {ex.Message}");
+            }
+        }
+
+        private async Task FetchAndPopulatePlayerStatistics(PlayerInfo playerInfo)
+        {
+            try
+            {
+                var playerRankStats = await apiService.GetPlayerRank(playerInfo.UserId);
+                playerInfo.MMR = (playerRankStats["mmr"]?.ToString() ?? "Error").PadLeft(4, '0').Substring(0, 4);
+                playerInfo.Rank = playerRankStats["rank_title"]?.ToString() ?? "Error";
+
+                var heroStats = await apiService.GetPlayerHeroStatistics(playerInfo.UserId, playerInfo.HeroId);
+                Debug.WriteLine(heroStats["hero_statistics"][0]["winrate"]);
+                playerInfo.HeroWinrate = Math.Round(decimal.Parse(heroStats["hero_statistics"][0]["winrate"]?.ToString() ?? "0") * 100) + "%";
+
+                var playerStats = await apiService.GetPlayerStatistics(playerInfo.UserId);
+                playerInfo.OverallWinrate = Math.Round(decimal.Parse(playerStats["winrate"]?.ToString() ?? "0") * 100).ToString("0.##") + "%";
+                //playerInfo.RoleWinrate = playerStats["role_winrate"]?.ToString() ?? "Error";
+                playerInfo.RoleWinrate = "Not Available yet..";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error fetching player statistics: {ex.Message}");
+                playerInfo.MMR = "Error";
+                playerInfo.OverallWinrate = "Error";
+                playerInfo.RoleWinrate = "Error";
+                playerInfo.HeroWinrate = "Error";
             }
         }
 

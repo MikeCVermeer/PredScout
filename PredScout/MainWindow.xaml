@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PredScout.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PredScout - Player Info" Height="700" Width="1375">
+        Title="PredScout - Player Info" Height="500" Width="1675">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,7 +20,8 @@
                             <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
                             <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
                             <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
-                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
+                            <GridViewColumn Header="Rank" DisplayMemberBinding="{Binding Rank}" Width="100" />
+                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="100" />
                             <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
                             <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
                             <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
@@ -35,7 +36,8 @@
                             <GridViewColumn Header="Player Name" DisplayMemberBinding="{Binding PlayerName}" Width="100" />
                             <GridViewColumn Header="Hero" DisplayMemberBinding="{Binding Hero}" Width="100" />
                             <GridViewColumn Header="Role" DisplayMemberBinding="{Binding TeamRole}" Width="100" />
-                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="50" />
+                            <GridViewColumn Header="Rank" DisplayMemberBinding="{Binding Rank}" Width="100" />
+                            <GridViewColumn Header="MMR" DisplayMemberBinding="{Binding MMR}" Width="100" />
                             <GridViewColumn Header="Role Winrate" DisplayMemberBinding="{Binding RoleWinrate}" Width="100" />
                             <GridViewColumn Header="Overall Winrate" DisplayMemberBinding="{Binding OverallWinrate}" Width="100" />
                             <GridViewColumn Header="Hero Winrate" DisplayMemberBinding="{Binding HeroWinrate}" Width="100" />
