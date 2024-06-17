@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 
 namespace PredScout
 {
@@ -21,9 +22,9 @@ namespace PredScout
             Team0Players = new ObservableCollection<PlayerInfo>();
             Team1Players = new ObservableCollection<PlayerInfo>();
 
-            // Bind the data to the ListViews
-            Team0ListView.ItemsSource = Team0Players;
-            Team1ListView.ItemsSource = Team1Players;
+            // Bind the data to the ItemsControls
+            TeamDawnItemsControl.ItemsSource = Team0Players;
+            TeamDuskItemsControl.ItemsSource = Team1Players;
 
             logFileProcessor = new LogFileProcessor(logFilePath);
 
@@ -55,6 +56,17 @@ namespace PredScout
         private void ProcessLogFile()
         {
             logFileProcessor.ProcessLogFile(Team0Players, Team1Players, status => Dispatcher.Invoke(() => StatusTextBlock.Text = status));
+        }
+
+        // Custom Border Functionality
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

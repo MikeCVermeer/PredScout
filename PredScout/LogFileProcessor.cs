@@ -94,14 +94,18 @@ namespace PredScout
                                 Hero = string.IsNullOrEmpty(hero) ? "Error" : hero,
                                 Team = team,
                                 TeamRole = string.IsNullOrEmpty(teamRole) ? "Error" : teamRole,
+                                GamesPlayedWithHero = "0", // Default value
+                                RankIconPath = "", // Default value
+                                HeroIconPath = "" // Default value
                             };
 
-                            // Get Hero ID from Hero Name
+                            // Get Rank Icon, Hero ID and Hero Icon
                             try
                             {
                                 var heroNameToId = new HeroNameToId();
                                 int heroId = heroNameToId.GetHeroId(hero);
                                 playerInfo.HeroId = heroId;
+
                             }
                             catch (Exception ex)
                             {
@@ -110,6 +114,21 @@ namespace PredScout
 
                             // Fetch player statistics
                             await FetchAndPopulatePlayerStatistics(playerInfo);
+
+                            // Get Rank, Role and Hero Icons
+                            try
+                            {
+                                var IconPathProcessor = new IconPathProcessor();
+                                playerInfo.RankIconPath = IconPathProcessor.GetRankIcon(playerInfo.Rank);
+                                playerInfo.HeroIconPath = IconPathProcessor.GetHeroIcon(hero);
+                                playerInfo.RoleIconPath = IconPathProcessor.GetRoleIcon(playerInfo.TeamRole);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine(ex.Message);
+                            }
+
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
@@ -150,21 +169,25 @@ namespace PredScout
                 playerInfo.Rank = playerRankStats["rank_title"]?.ToString() ?? "Error";
 
                 var heroStats = await apiService.GetPlayerHeroStatistics(playerInfo.UserId, playerInfo.HeroId);
-                Debug.WriteLine(heroStats["hero_statistics"][0]["winrate"]);
                 playerInfo.HeroWinrate = Math.Round(decimal.Parse(heroStats["hero_statistics"][0]["winrate"]?.ToString() ?? "0") * 100) + "%";
+                playerInfo.HeroName = heroStats["hero_statistics"][0]["display_name"]?.ToString() ?? "Error";
 
                 var playerStats = await apiService.GetPlayerStatistics(playerInfo.UserId);
-                playerInfo.OverallWinrate = Math.Round(decimal.Parse(playerStats["winrate"]?.ToString() ?? "0") * 100).ToString("0.##") + "%";
+                playerInfo.OverallWinrate = Math.Round(decimal.Parse(playerStats["winrate"]?.ToString() ?? "0") * 100).ToString("0.##") + "% Winrate";
                 //playerInfo.RoleWinrate = playerStats["role_winrate"]?.ToString() ?? "Error";
-                playerInfo.RoleWinrate = "Not Available yet..";
+                playerInfo.RoleWinrate = "Not Available yet.."; // Placeholder for Role Winrate
+                playerInfo.FavoriteRole = "Favorite Role = " + playerStats["favorite_role"]?.ToString() ?? "Error";
+
+                // Set KDA with AvgKills, AvgDeaths, and AvgAssists from API response
+                playerInfo.AvgKills = double.Parse(heroStats["hero_statistics"][0]["avg_kills"]?.ToString() ?? "0");
+                playerInfo.AvgDeaths = double.Parse(heroStats["hero_statistics"][0]["avg_deaths"]?.ToString() ?? "0");
+                playerInfo.AvgAssists = double.Parse(heroStats["hero_statistics"][0]["avg_assists"]?.ToString() ?? "0");
+
+                playerInfo.GamesPlayedWithHero = int.Parse(heroStats["hero_statistics"][0]["match_count"]?.ToString() ?? "0") + " games played";
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error fetching player statistics: {ex.Message}");
-                playerInfo.MMR = "Error";
-                playerInfo.OverallWinrate = "Error";
-                playerInfo.RoleWinrate = "Error";
-                playerInfo.HeroWinrate = "Error";
             }
         }
 

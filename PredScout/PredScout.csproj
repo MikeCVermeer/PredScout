@@ -5,9 +5,146 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <None Remove="assets\heroes\Aurora.webp" />
+	  <None Remove="assets\heroes\Countess.webp" />
+	  <None Remove="assets\heroes\Crunch.webp" />
+	  <None Remove="assets\heroes\Dekker.webp" />
+	  <None Remove="assets\heroes\Drongo.webp" />
+	  <None Remove="assets\heroes\Emerald.webp" />
+	  <None Remove="assets\heroes\FengMao.webp" />
+	  <None Remove="assets\heroes\Fey.webp" />
+	  <None Remove="assets\heroes\Gadget.webp" />
+	  <None Remove="assets\heroes\Gideon.webp" />
+	  <None Remove="assets\heroes\Greystone.webp" />
+	  <None Remove="assets\heroes\GRIMexe.webp" />
+	  <None Remove="assets\heroes\Grux.webp" />
+	  <None Remove="assets\heroes\Howitzer.webp" />
+	  <None Remove="assets\heroes\Huntress.webp" />
+	  <None Remove="assets\heroes\IggyScorch.webp" />
+	  <None Remove="assets\heroes\Kallari.webp" />
+	  <None Remove="assets\heroes\Khaimera.webp" />
+	  <None Remove="assets\heroes\Kwang.webp" />
+	  <None Remove="assets\heroes\Lizard.webp" />
+	  <None Remove="assets\heroes\LtBelica.webp" />
+	  <None Remove="assets\heroes\Morigesh.webp" />
+	  <None Remove="assets\heroes\Murdock.webp" />
+	  <None Remove="assets\heroes\Muriel.webp" />
+	  <None Remove="assets\heroes\Narbash.webp" />
+	  <None Remove="assets\heroes\Phase.webp" />
+	  <None Remove="assets\heroes\Rampage.webp" />
+	  <None Remove="assets\heroes\Revenant.webp" />
+	  <None Remove="assets\heroes\Riktor.webp" />
+	  <None Remove="assets\heroes\Serath.webp" />
+	  <None Remove="assets\heroes\Sevarog.webp" />
+	  <None Remove="assets\heroes\Shinbi.webp" />
+	  <None Remove="assets\heroes\Sparrow.webp" />
+	  <None Remove="assets\heroes\Steel.webp" />
+	  <None Remove="assets\heroes\TwinBlast.webp" />
+	  <None Remove="assets\heroes\Wraith.webp" />
+	  <None Remove="assets\roles\carry.png" />
+	  <None Remove="assets\roles\carry.webp" />
+	  <None Remove="assets\roles\jungle.png" />
+	  <None Remove="assets\roles\jungle.webp" />
+	  <None Remove="assets\roles\midlane.png" />
+	  <None Remove="assets\roles\midlane.webp" />
+	  <None Remove="assets\roles\offlane.png" />
+	  <None Remove="assets\roles\offlane.webp" />
+	  <None Remove="assets\roles\support.png" />
+	  <None Remove="assets\roles\support.webp" />
+	  <None Remove="assets\ranks\bronze_1.png" />
+	  <None Remove="assets\ranks\bronze_2.png" />
+	  <None Remove="assets\ranks\bronze_3.png" />
+	  <None Remove="assets\ranks\diamond_1.png" />
+	  <None Remove="assets\ranks\diamond_2.png" />
+	  <None Remove="assets\ranks\diamond_3.png" />
+	  <None Remove="assets\ranks\gold_1.png" />
+	  <None Remove="assets\ranks\gold_2.png" />
+	  <None Remove="assets\ranks\gold_3.png" />
+	  <None Remove="assets\ranks\grandmaster.png" />
+	  <None Remove="assets\ranks\master_1.png" />
+	  <None Remove="assets\ranks\master_2.png" />
+	  <None Remove="assets\ranks\master_3.png" />
+	  <None Remove="assets\ranks\platinum_1.png" />
+	  <None Remove="assets\ranks\platinum_2.png" />
+	  <None Remove="assets\ranks\platinum_3.png" />
+	  <None Remove="assets\ranks\silver_1.png" />
+	  <None Remove="assets\ranks\silver_2.png" />
+	  <None Remove="assets\ranks\silver_3.png" />
+	  <None Remove="binoculars.png" />
+	  <None Remove="Crunch.webp" />
+	  <None Remove="Lizard.webp" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="assets\heroes\Aurora.webp" />
+	  <Resource Include="assets\heroes\Countess.webp" />
+	  <Resource Include="assets\heroes\Crunch.webp" />
+	  <Resource Include="assets\heroes\Dekker.webp" />
+	  <Resource Include="assets\heroes\Drongo.webp" />
+	  <Resource Include="assets\heroes\Emerald.webp" />
+	  <Resource Include="assets\heroes\FengMao.webp" />
+	  <Resource Include="assets\heroes\Fey.webp" />
+	  <Resource Include="assets\heroes\Gadget.webp" />
+	  <Resource Include="assets\heroes\Gideon.webp" />
+	  <Resource Include="assets\heroes\Greystone.webp" />
+	  <Resource Include="assets\heroes\GRIMexe.webp" />
+	  <Resource Include="assets\heroes\Grux.webp" />
+	  <Resource Include="assets\heroes\Howitzer.webp" />
+	  <Resource Include="assets\heroes\Huntress.webp" />
+	  <Resource Include="assets\heroes\IggyScorch.webp" />
+	  <Resource Include="assets\heroes\Kallari.webp" />
+	  <Resource Include="assets\heroes\Khaimera.webp" />
+	  <Resource Include="assets\heroes\Kwang.webp" />
+	  <Resource Include="assets\heroes\Lizard.webp" />
+	  <Resource Include="assets\heroes\LtBelica.webp" />
+	  <Resource Include="assets\heroes\Morigesh.webp" />
+	  <Resource Include="assets\heroes\Murdock.webp" />
+	  <Resource Include="assets\heroes\Muriel.webp" />
+	  <Resource Include="assets\heroes\Narbash.webp" />
+	  <Resource Include="assets\heroes\Phase.webp" />
+	  <Resource Include="assets\heroes\Rampage.webp" />
+	  <Resource Include="assets\heroes\Revenant.webp" />
+	  <Resource Include="assets\heroes\Riktor.webp" />
+	  <Resource Include="assets\heroes\Serath.webp" />
+	  <Resource Include="assets\heroes\Sevarog.webp" />
+	  <Resource Include="assets\heroes\Shinbi.webp" />
+	  <Resource Include="assets\heroes\Sparrow.webp" />
+	  <Resource Include="assets\heroes\Steel.webp" />
+	  <Resource Include="assets\heroes\TwinBlast.webp" />
+	  <Resource Include="assets\heroes\Wraith.webp" />
+	  <Resource Include="assets\roles\carry.png" />
+	  <Resource Include="assets\roles\jungle.png" />
+	  <Resource Include="assets\roles\midlane.png" />
+	  <Resource Include="assets\roles\offlane.png" />
+	  <Resource Include="assets\ranks\bronze_1.png" />
+	  <Resource Include="assets\ranks\bronze_2.png" />
+	  <Resource Include="assets\ranks\bronze_3.png" />
+	  <Resource Include="assets\ranks\diamond_1.png" />
+	  <Resource Include="assets\ranks\diamond_2.png" />
+	  <Resource Include="assets\ranks\diamond_3.png" />
+	  <Resource Include="assets\ranks\gold_1.png" />
+	  <Resource Include="assets\ranks\gold_2.png" />
+	  <Resource Include="assets\ranks\gold_3.png" />
+	  <Resource Include="assets\ranks\grandmaster.png" />
+	  <Resource Include="assets\ranks\master_1.png" />
+	  <Resource Include="assets\ranks\master_2.png" />
+	  <Resource Include="assets\ranks\master_3.png" />
+	  <Resource Include="assets\ranks\platinum_1.png" />
+	  <Resource Include="assets\ranks\platinum_2.png" />
+	  <Resource Include="assets\ranks\platinum_3.png" />
+	  <Resource Include="assets\ranks\silver_1.png" />
+	  <Resource Include="assets\ranks\silver_2.png" />
+	  <Resource Include="assets\ranks\silver_3.png" />
+	  <Resource Include="assets\roles\support.png" />
+	  <Resource Include="binoculars.png" />
+	  <Resource Include="Crunch.webp" />
+	  <Resource Include="Lizard.webp" />
 	</ItemGroup>
 
 </Project>
