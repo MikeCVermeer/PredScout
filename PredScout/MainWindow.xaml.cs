@@ -49,7 +49,6 @@ namespace PredScout
 
         private void OnLogFileChanged(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Log file changed: {e.FullPath}");
             ProcessLogFile();
         }
 

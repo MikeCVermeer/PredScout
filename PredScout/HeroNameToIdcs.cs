@@ -22,7 +22,7 @@ namespace PredScout
                 { "Dekker", 3 },
                 { "Drongo", 4 },
                 { "FengMao", 5 },
-                { "TheFey", 6 },
+                { "Fey", 6 }, // The Fey
                 { "Gadget", 7 },
                 { "Gideon", 8 },
                 { "Grux", 9 },
@@ -50,7 +50,7 @@ namespace PredScout
                 { "Wraith", 41 },
                 { "IggyScorch", 42 },
                 { "Kwang", 44 },
-                { "Argus", 49 },
+                { "Emerald", 49 }, // Argus
                 { "GRIMexe", 52 },
                 { "Aurora", 53 }
             };
