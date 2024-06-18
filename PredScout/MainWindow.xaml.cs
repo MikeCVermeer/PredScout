@@ -54,7 +54,7 @@ namespace PredScout
 
         private void ProcessLogFile()
         {
-            logFileProcessor.ProcessLogFile(Team0Players, Team1Players, status => Dispatcher.Invoke(() => StatusTextBlock.Text = status));
+            logFileProcessor.ProcessLogFile(Team0Players, Team1Players, status => Dispatcher.InvokeAsync(() => StatusTextBlock.Text = status));
         }
 
         // Custom Border Functionality

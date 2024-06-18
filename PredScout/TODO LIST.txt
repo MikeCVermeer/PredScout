@@ -1,0 +1,22 @@
+﻿TODO:
+
+	Important features:
+	- Add total amount of games played
+	- Add total amount of games played as <role>
+	- Add role winrates
+
+	Eventual features:
+	- Add ability upgrade paths based on Grandmaster data
+	- Add Player Tags(Win streaks, Loss streaks, etc.)
+	- Add party icons to show who was in a party
+	- Add indicators for people of interest(streamers, pros, etc.)
+	- Add a way to see the most popular builds for a hero
+
+	Later additions:
+	- Frequent foes and allies
+	- Draft mode(If possible)
+	
+	Far future:
+	- Log in system
+	- Monetization system
+	- Premium features

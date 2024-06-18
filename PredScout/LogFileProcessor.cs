@@ -13,19 +13,17 @@ namespace PredScout
     {
         private readonly string logFilePath;
         private long lastFilePosition;
-        private bool inMatch;
         private readonly ApiService apiService;
 
         public LogFileProcessor(string logFilePath)
         {
             this.logFilePath = logFilePath;
             this.lastFilePosition = 0;
-            this.inMatch = false;
             this.apiService = new ApiService();
 
         }
 
-        public async void ProcessLogFile(ObservableCollection<PlayerInfo> team0Players, ObservableCollection<PlayerInfo> team1Players, Action<string> updateStatus)
+        public async Task ProcessLogFile(ObservableCollection<PlayerInfo> team0Players, ObservableCollection<PlayerInfo> team1Players, Action<string> updateStatus)
         {
             try
             {
@@ -38,7 +36,7 @@ namespace PredScout
                     string line;
                     bool inCurrentMatch = false;
 
-                    while ((line = sr.ReadLine()) != null)
+                    while ((line = await sr.ReadLineAsync()) != null)
                     {
                         // Update the last file position
                         lastFilePosition = fs.Position;
@@ -47,7 +45,6 @@ namespace PredScout
                         {
                             Console.WriteLine("Found start of new match block.");
                             inCurrentMatch = true;
-                            inMatch = true;
                             updateStatus("In a match");
                             continue;
                         }
@@ -55,8 +52,7 @@ namespace PredScout
                         if (line.Contains("Matchmaking: State changed MatchStart -> None"))
                         {
                             Console.WriteLine("Match finished, clearing teams.");
-                            inMatch = false;
-                            Application.Current.Dispatcher.Invoke(() =>
+                            await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
                                 inCurrentMatch = false;
                                 team0Players.Clear();
@@ -126,7 +122,7 @@ namespace PredScout
                             }
 
 
-                            Application.Current.Dispatcher.Invoke(() =>
+                            await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
                                 if (team == 0)
                                 {
