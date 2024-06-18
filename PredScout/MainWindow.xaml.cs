@@ -49,13 +49,12 @@ namespace PredScout
 
         private void OnLogFileChanged(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Log file changed: {e.FullPath}");
             ProcessLogFile();
         }
 
         private void ProcessLogFile()
         {
-            logFileProcessor.ProcessLogFile(Team0Players, Team1Players, status => Dispatcher.Invoke(() => StatusTextBlock.Text = status));
+            logFileProcessor.ProcessLogFile(Team0Players, Team1Players, status => Dispatcher.InvokeAsync(() => StatusTextBlock.Text = status));
         }
 
         // Custom Border Functionality

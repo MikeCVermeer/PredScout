@@ -19,7 +19,7 @@ namespace PredScout
                 { "Dekker", "pack://application:,,,/assets/heroes/Dekker.webp" },
                 { "Drongo", "pack://application:,,,/assets/heroes/Drongo.webp" },
                 { "FengMao", "pack://application:,,,/assets/heroes/FengMao.webp" },
-                { "TheFey", "pack://application:,,,/assets/heroes/Fey.webp" },
+                { "Fey", "pack://application:,,,/assets/heroes/Fey.webp" }, // The Fey
                 { "Gadget", "pack://application:,,,/assets/heroes/Gadget.webp" },
                 { "Gideon", "pack://application:,,,/assets/heroes/Gideon.webp" },
                 { "Grux", "pack://application:,,,/assets/heroes/Grux.webp" },
@@ -37,24 +37,25 @@ namespace PredScout
                 { "Steel", "pack://application:,,,/assets/heroes/Steel.webp" },
                 { "Revenant", "pack://application:,,,/assets/heroes/Revenant.webp" },
                 { "Shinbi", "pack://application:,,,/assets/heroes/Shinbi.webp" },
-                { "Huntress", "pack://application:,,,/assets/heroes/Huntress.webp" },
+                { "Huntress", "pack://application:,,,/assets/heroes/Huntress.webp" }, // Kira
                 { "Phase", "pack://application:,,,/assets/heroes/Phase.webp" },
                 { "Morigesh", "pack://application:,,,/assets/heroes/Morigesh.webp" },
                 { "Greystone", "pack://application:,,,/assets/heroes/Greystone.webp" },
                 { "TwinBlast", "pack://application:,,,/assets/heroes/TwinBlast.webp" },
-                { "Lizard", "pack://application:,,,/assets/heroes/Lizard.webp" },
+                { "Lizard", "pack://application:,,,/assets/heroes/Lizard.webp" }, // Zarus
                 { "Serath", "pack://application:,,,/assets/heroes/Serath.webp" },
                 { "Wraith", "pack://application:,,,/assets/heroes/Wraith.webp" },
                 { "IggyScorch", "pack://application:,,,/assets/heroes/IggyScorch.webp" },
                 { "Kwang", "pack://application:,,,/assets/heroes/Kwang.webp" },
-                { "Argus", "pack://application:,,,/assets/heroes/Emerald.webp" },
+                { "Emerald", "pack://application:,,,/assets/heroes/Emerald.webp" }, // Argus
                 { "GRIMexe", "pack://application:,,,/assets/heroes/GRIMexe.webp" },
                 { "Aurora", "pack://application:,,,/assets/heroes/Aurora.webp" }
             };
 
             rankIconDictionary = new Dictionary<string, string>
             {
-                { "Bronze", "pack://application:,,,/assets/ranks/bronze_1.png" },
+                { "Unranked", "" },
+                { "Bronze I", "pack://application:,,,/assets/ranks/bronze_1.png" },
                 { "Bronze II", "pack://application:,,,/assets/ranks/bronze_2.png" },
                 { "Bronze III", "pack://application:,,,/assets/ranks/bronze_3.png" },
                 { "Silver I", "pack://application:,,,/assets/ranks/silver_1.png" },
