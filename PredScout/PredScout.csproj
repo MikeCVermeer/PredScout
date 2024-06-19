@@ -5,6 +5,13 @@
 		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+
+		<!-- Define the version properties -->
+		<VersionPrefix>1.0</VersionPrefix>
+		<VersionSuffix>0</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).$(VersionSuffix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+		<InformationalVersion>$(VersionPrefix).$(VersionSuffix)</InformationalVersion>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -73,12 +80,16 @@
 	  <None Remove="assets\ranks\silver_1.png" />
 	  <None Remove="assets\ranks\silver_2.png" />
 	  <None Remove="assets\ranks\silver_3.png" />
-	  <None Remove="binoculars.png" />
-	  <None Remove="Crunch.webp" />
-	  <None Remove="Lizard.webp" />
+	  <None Remove="binoculars.ico" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Include="assets\binoculars - Copy.ico" />
+	  <Content Include="assets\binoculars.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
@@ -143,9 +154,7 @@
 	  <Resource Include="assets\ranks\silver_2.png" />
 	  <Resource Include="assets\ranks\silver_3.png" />
 	  <Resource Include="assets\roles\support.png" />
-	  <Resource Include="binoculars.png" />
-	  <Resource Include="Crunch.webp" />
-	  <Resource Include="Lizard.webp" />
+	  <Resource Include="binoculars.ico" />
 	</ItemGroup>
 
 </Project>

@@ -67,25 +67,22 @@ namespace PredScout
                     }
                 }
             }
-            else if (parameter.ToString() == "Role")
+            else if (parameter.ToString() == "Role" && value is string role)
             {
-                if (value is string role)
+                switch (role)
                 {
-                    switch (role)
-                    {
-                        case "Offlane":
-                            return Brushes.Orange;
-                        case "Jungle":
-                            return Brushes.ForestGreen;
-                        case "Midlane":
-                            return Brushes.MediumPurple;
-                        case "Carry":
-                            return Brushes.Red;
-                        case "Support":
-                            return Brushes.DeepSkyBlue;
-                        default:
-                            return Brushes.Black;
-                    }
+                    case "Offlane":
+                        return Brushes.Orange;
+                    case "Jungle":
+                        return Brushes.LightGreen;
+                    case "Midlane":
+                        return Brushes.Magenta;
+                    case "Carry":
+                        return Brushes.Red;
+                    case "Support":
+                        return Brushes.DeepSkyBlue;
+                    default:
+                        return Brushes.Black;
                 }
             }
             return Brushes.Black;
