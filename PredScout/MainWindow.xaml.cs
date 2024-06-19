@@ -18,6 +18,7 @@ namespace PredScout
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new { Version = GetVersionNumber() };
 
             Team0Players = new ObservableCollection<PlayerInfo>();
             Team1Players = new ObservableCollection<PlayerInfo>();
@@ -66,6 +67,10 @@ namespace PredScout
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+        private string GetVersionNumber()
+        {
+            return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
         }
     }
 }
