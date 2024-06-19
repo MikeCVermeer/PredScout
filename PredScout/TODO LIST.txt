@@ -1,7 +1,6 @@
 ﻿TODO:
 
 	Important features:
-	- Add total amount of games played
 	- Add total amount of games played as <role>
 	- Add role winrates
 
@@ -20,3 +19,7 @@
 	- Log in system
 	- Monetization system
 	- Premium features
+
+DONE:
+	- Add hero winrates
+	- Add total amount of games played

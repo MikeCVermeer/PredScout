@@ -77,7 +77,8 @@ namespace PredScout
                                 TeamRole = teamRole ?? "Error",
                                 GamesPlayedWithHero = "0",
                                 RankIconPath = "",
-                                HeroIconPath = ""
+                                HeroIconPath = "",
+                                MMR = "MMR: 0000",
                             };
 
                             try
@@ -105,6 +106,9 @@ namespace PredScout
                             {
                                 Console.WriteLine(ex.Message);
                             }
+
+                            // Calculate Role Statistics
+                            await RoleCalculations.GetRoleGamesTotal(playerInfo, apiService);
 
                             await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
