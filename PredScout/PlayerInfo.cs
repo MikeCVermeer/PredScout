@@ -19,11 +19,14 @@
         public double AvgDeaths { get; set; } // Fetched from the API
         public double AvgAssists { get; set; } // Fetched from the API
         public string GamesPlayedWithHero { get; set; } // Fetched from the API
+        public string GamesPlayedWithRole { get; set; } // Fetched from the API
+        public int TotalGames { get; set; } // Fetched from the API
         public string HeroIconPath { get; set; } // Fetched from the API
         public string RoleIconPath { get; set; } // Fetched from the API
         public string FavoriteRole { get; set; } // Fetched from the API
 
         // Computed properties for PlayerInfo Summary
-        public string HeroAndGamesPlayed => $"{HeroName} - {GamesPlayedWithHero}";
+        public string TotalGamesPlayed => $"{TotalGames} games played";
+        public string HeroAndGamesPlayedAndWR => $"{HeroName} - {GamesPlayedWithHero} ({HeroWinrate})";
     }
 }

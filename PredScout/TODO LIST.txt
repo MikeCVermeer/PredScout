@@ -1,9 +1,9 @@
 ﻿TODO:
 
 	Important features:
-	- Add total amount of games played
-	- Add total amount of games played as <role>
-	- Add role winrates
+	- Add total amount of games played as <role> to UI
+	- Add role winrates to UI
+	- Add required update for startup
 
 	Eventual features:
 	- Add ability upgrade paths based on Grandmaster data
@@ -20,3 +20,7 @@
 	- Log in system
 	- Monetization system
 	- Premium features
+
+DONE:
+	- Add hero winrates
+	- Add total amount of games played

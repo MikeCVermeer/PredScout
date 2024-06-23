@@ -10,10 +10,12 @@ namespace PredScout
         {
             try
             {
+                // Fetch player rank statistics
                 var playerRankStats = await apiService.GetPlayerRank(playerInfo.UserId);
-                playerInfo.MMR = playerRankStats?["mmr"]?.ToObject<string>()?.PadLeft(4, '0').Substring(0, 4) ?? "Error";
+                playerInfo.MMR = "MMR: " + playerRankStats?["mmr"]?.ToObject<string>()?.PadLeft(4, '0').Substring(0, 4);
                 playerInfo.Rank = playerRankStats?["rank_title"]?.ToString() ?? "Unranked";
 
+                // Fetch player hero statistics
                 var heroStats = await apiService.GetPlayerHeroStatistics(playerInfo.UserId, playerInfo.HeroId);
                 var heroStatsData = heroStats?["hero_statistics"]?.FirstOrDefault();
 
@@ -22,6 +24,13 @@ namespace PredScout
                     : "0%";
                 playerInfo.HeroName = heroStatsData?["display_name"]?.ToObject<string>() ?? "Error";
 
+                playerInfo.AvgKills = heroStatsData?["avg_kills"]?.ToObject<double>() ?? 0;
+                playerInfo.AvgDeaths = heroStatsData?["avg_deaths"]?.ToObject<double>() ?? 0;
+                playerInfo.AvgAssists = heroStatsData?["avg_assists"]?.ToObject<double>() ?? 0;
+
+                playerInfo.GamesPlayedWithHero = (heroStatsData?["match_count"]?.ToObject<int>() ?? 0) + " games played";
+
+                // Fetch player overall statistics
                 var playerStats = await apiService.GetPlayerStatistics(playerInfo.UserId);
                 playerInfo.OverallWinrate = Math.Round((playerStats?["winrate"]?.ToObject<decimal>() ?? 0) * 100).ToString("0.##") + "% Winrate";
                 playerInfo.RoleWinrate = "Not Available yet..";
@@ -31,11 +40,7 @@ namespace PredScout
                     ? "Favorite Role = None yet"
                     : $"Favorite Role = {favoriteRole}";
 
-                playerInfo.AvgKills = heroStatsData?["avg_kills"]?.ToObject<double>() ?? 0;
-                playerInfo.AvgDeaths = heroStatsData?["avg_deaths"]?.ToObject<double>() ?? 0;
-                playerInfo.AvgAssists = heroStatsData?["avg_assists"]?.ToObject<double>() ?? 0;
-
-                playerInfo.GamesPlayedWithHero = (heroStatsData?["match_count"]?.ToObject<int>() ?? 0) + " games played";
+                playerInfo.TotalGames = (playerStats?["matches_played"]?.ToObject<int>() ?? 0);
             }
             catch (Exception ex)
             {

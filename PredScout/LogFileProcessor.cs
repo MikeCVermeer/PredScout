@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -33,10 +34,24 @@ namespace PredScout
 
                     string line;
                     bool inCurrentMatch = false;
+                    var playerInfos = new List<PlayerInfo>();
 
                     while ((line = await sr.ReadLineAsync()) != null)
                     {
                         lastFilePosition = fs.Position;
+
+                        // Matchmaking: State changed MatchStart -> None = For Standard and Brawl - Data loaded: false = for Ranked
+                        if (line.Contains("Matchmaking: State changed MatchStart -> None") || line.Contains("Data loaded: false"))
+                        {
+                            await Application.Current.Dispatcher.InvokeAsync(() =>
+                            {
+                                inCurrentMatch = false;
+                                team0Players.Clear();
+                                team1Players.Clear();
+                                updateStatus("Not currently in a match");
+                            });
+                            continue;
+                        }
 
                         if (line.Contains("Pre game screen is now active"))
                         {
@@ -44,18 +59,6 @@ namespace PredScout
                             updateStatus("In a match");
                             continue;
                         }
-
-                        //if (line.Contains("Matchmaking: State changed MatchStart -> None"))
-                        //{
-                        //    await Application.Current.Dispatcher.InvokeAsync(() =>
-                        //    {
-                        //        inCurrentMatch = false;
-                        //        team0Players.Clear();
-                        //        team1Players.Clear();
-                        //        updateStatus("Not currently in a match");
-                        //    });
-                        //    continue;
-                        //}
 
                         if (inCurrentMatch && line.Contains("LogPredLoadingScreenManager: UserID:"))
                         {
@@ -77,7 +80,8 @@ namespace PredScout
                                 TeamRole = teamRole ?? "Error",
                                 GamesPlayedWithHero = "0",
                                 RankIconPath = "",
-                                HeroIconPath = ""
+                                HeroIconPath = "",
+                                MMR = "MMR: 0000",
                             };
 
                             try
@@ -91,29 +95,13 @@ namespace PredScout
                                 Console.WriteLine(ex.Message);
                             }
 
-                            // Fetch and populate player statistics
-                            await PlayerProcessor.FetchAndPopulatePlayerStatistics(playerInfo, apiService);
-
-                            try
-                            {
-                                var iconPathProcessor = new IconPathProcessor();
-                                playerInfo.RankIconPath = iconPathProcessor.GetRankIcon(playerInfo.Rank);
-                                playerInfo.HeroIconPath = iconPathProcessor.GetHeroIcon(hero);
-                                playerInfo.RoleIconPath = iconPathProcessor.GetRoleIcon(playerInfo.TeamRole);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
-
-                            await Application.Current.Dispatcher.InvokeAsync(() =>
-                            {
-                                if (team == 0) team0Players.Add(playerInfo);
-                                else team1Players.Add(playerInfo);
-                                TeamUtilities.SortTeamPlayers(team0Players);
-                                TeamUtilities.SortTeamPlayers(team1Players);
-                            });
+                            playerInfos.Add(playerInfo);
                         }
+                    }
+
+                    if (playerInfos.Any())
+                    {
+                        await ProcessPlayers(playerInfos, team0Players, team1Players);
                     }
                 }
             }
@@ -125,6 +113,47 @@ namespace PredScout
             {
                 Console.WriteLine($"Unexpected exception: {ex.Message}");
             }
+            finally
+            {
+                // Force garbage collection after processing the log file
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        private async Task ProcessPlayers(List<PlayerInfo> playerInfos, ObservableCollection<PlayerInfo> team0Players, ObservableCollection<PlayerInfo> team1Players)
+        {
+            var tasks = playerInfos.Select(async playerInfo =>
+            {
+                // Fetch and populate player statistics
+                await PlayerProcessor.FetchAndPopulatePlayerStatistics(playerInfo, apiService);
+
+                // Calculate Role Statistics
+                await RoleCalculations.GetRoleGamesTotal(playerInfo, apiService);
+
+                // Fetch icon paths
+                try
+                {
+                    var iconPathProcessor = new IconPathProcessor();
+                    playerInfo.RankIconPath = iconPathProcessor.GetRankIcon(playerInfo.Rank);
+                    playerInfo.HeroIconPath = iconPathProcessor.GetHeroIcon(playerInfo.Hero);
+                    playerInfo.RoleIconPath = iconPathProcessor.GetRoleIcon(playerInfo.TeamRole);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    if (playerInfo.Team == 0) team0Players.Add(playerInfo);
+                    else team1Players.Add(playerInfo);
+                    TeamUtilities.SortTeamPlayers(team0Players);
+                    TeamUtilities.SortTeamPlayers(team1Players);
+                });
+            });
+
+            await Task.WhenAll(tasks);
         }
     }
 }

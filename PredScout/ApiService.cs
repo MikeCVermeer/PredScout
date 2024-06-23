@@ -37,5 +37,13 @@ namespace PredScout
             var content = await response.Content.ReadAsStringAsync();
             return JObject.Parse(content);
         }
+
+        public async Task<JObject> GetMatchesPerPageAndRole(string playerId, int pageNumber, string teamrole)
+        {
+            var response = await _httpClient.GetAsync($"/players/{playerId}/matches.json?per_page=100&page={pageNumber}&role={teamrole}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JObject.Parse(content);
+        }
     }
 }
