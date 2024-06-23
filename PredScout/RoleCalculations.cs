@@ -15,7 +15,7 @@ namespace PredScout
             int pageSize = 100; // Assuming we fetch 100 matches per page
             int pages = (int)Math.Ceiling(totalMatches / (double)pageSize);
 
-            Console.WriteLine($"Fetching {totalMatches} matches for {playerInfo.PlayerName} as {playerInfo.TeamRole}...");
+            //Console.WriteLine($"Fetching {totalMatches} matches for {playerInfo.PlayerName} as {playerInfo.TeamRole}...");
 
             var tasks = new List<Task<JObject>>();
             for (int page = 1; page <= pages; page++)
@@ -57,8 +57,8 @@ namespace PredScout
             playerInfo.RoleWinrate = totalGamesPlayedAsRole > 0 ? $"{Math.Round((totalWinsAsRole / (double)totalGamesPlayedAsRole) * 100)}%" : "0%";
             playerInfo.GamesPlayedWithRole = $"{totalGamesPlayedAsRole} games played";
 
-            Console.WriteLine($"Role Winrate for {playerInfo.PlayerName} as {playerInfo.TeamRole}: {playerInfo.RoleWinrate}");
-            Console.WriteLine($"{playerInfo.PlayerName}'s Total games played as {playerInfo.TeamRole}: {totalGamesPlayedAsRole}");
+            //Console.WriteLine($"Role Winrate for {playerInfo.PlayerName} as {playerInfo.TeamRole}: {playerInfo.RoleWinrate}");
+            //Console.WriteLine($"{playerInfo.PlayerName}'s Total games played as {playerInfo.TeamRole}: {totalGamesPlayedAsRole}");
         }
     }
 }

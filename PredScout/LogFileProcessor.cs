@@ -40,6 +40,19 @@ namespace PredScout
                     {
                         lastFilePosition = fs.Position;
 
+                        // Matchmaking: State changed MatchStart -> None = For Standard and Brawl - Data loaded: false = for Ranked
+                        if (line.Contains("Matchmaking: State changed MatchStart -> None") || line.Contains("Data loaded: false"))
+                        {
+                            await Application.Current.Dispatcher.InvokeAsync(() =>
+                            {
+                                inCurrentMatch = false;
+                                team0Players.Clear();
+                                team1Players.Clear();
+                                updateStatus("Not currently in a match");
+                            });
+                            continue;
+                        }
+
                         if (line.Contains("Pre game screen is now active"))
                         {
                             inCurrentMatch = true;

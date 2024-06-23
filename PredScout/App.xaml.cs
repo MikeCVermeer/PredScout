@@ -5,7 +5,11 @@ namespace PredScout
 {
     public partial class App : Application
     {
+#if DEBUG
         bool LoadingWindowEnabled = false;
+#else
+        bool LoadingWindowEnabled = true;
+#endif
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -20,9 +24,9 @@ namespace PredScout
             StartupLoadWindow loadingWindow = new StartupLoadWindow();
             loadingWindow.Show();
 
-            bool isConnected = await loadingWindow.CheckServerStatus();
+            bool isAuthorized = await loadingWindow.CheckStartupAuthorized();
 
-            if (isConnected)
+            if (isAuthorized)
             {
                 MainWindow mainWindow = new MainWindow();
                 loadingWindow.Close();
@@ -30,8 +34,8 @@ namespace PredScout
             }
             else
             {
-                MessageBox.Show("Could not establish a connection with PredScout servers.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
+                //MessageBox.Show("Could not establish a connection with PredScout servers.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //Shutdown();
             }
         }
     }
