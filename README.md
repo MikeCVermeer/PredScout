@@ -1,5 +1,8 @@
 # PredScout
 
+> [!WARNING]  
+> This is no longer under development.
+
 PredScout is a desktop application designed to enhance your gameplay in the MOBA game Predecessor. It provides real-time match data, statistics, and insights about the players you are playing with and against.
 
 ## Current Features
